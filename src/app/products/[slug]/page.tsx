@@ -5,7 +5,7 @@ import { SiteHeader } from "@/components/layout/site-header";
 import { Badge } from "@/components/ui/badge";
 import { products } from "@/data/products";
 import { formatCategory, formatCurrency } from "@/lib/utils";
-
+import { ProductPurchasePanel } from "@/components/products/product-purchase-panel";
 type ProductDetailsPageProps = {
   params: Promise<{
     slug: string;
@@ -141,6 +141,8 @@ export default async function ProductDetailsPage({
                 </p>
               </div>
             </div>
+
+            <ProductPurchasePanel product={product} />
 
             <div className="mt-8 rounded-xl bg-neutral-50 p-5">
               <p className="text-sm font-semibold text-neutral-950">
