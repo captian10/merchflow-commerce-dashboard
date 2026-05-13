@@ -1,10 +1,13 @@
+import Image from "next/image";
 import Link from "next/link";
+import { ArrowUpRight, Star } from "lucide-react";
 import type { Product } from "@/types/product";
 import { Badge } from "@/components/ui/badge";
 import { formatCategory, formatCurrency } from "@/lib/utils";
 
 type ProductCardProps = {
   product: Product;
+  priority?: boolean;
 };
 
 function getStatusBadge(product: Product) {
@@ -19,52 +22,76 @@ function getStatusBadge(product: Product) {
   return { label: "Active", tone: "success" as const };
 }
 
-export function ProductCard({ product }: ProductCardProps) {
+export function ProductCard({ product, priority = false }: ProductCardProps) {
   const statusBadge = getStatusBadge(product);
+  const isUnavailable =
+    product.status === "out-of-stock" || product.stock === 0;
 
   return (
     <Link
       href={`/products/${product.slug}`}
-      className="block rounded-xl border border-neutral-200 bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+      className="group block overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-sm transition duration-200 hover:-translate-y-1 hover:border-neutral-300 hover:shadow-lg"
     >
-      <article>
-        <div className="flex aspect-4/3 items-center justify-center rounded-lg bg-neutral-100 text-sm font-medium text-neutral-500">
-          {formatCategory(product.category)}
-        </div>
+      <article className="flex h-full flex-col">
+        <div className="relative m-3 flex aspect-5/4 items-center justify-center rounded-xl bg-neutral-50 p-6">
+          <Image
+            src={product.image}
+            alt={product.name}
+            fill
+            sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+            className="object-contain p-5 transition duration-300 group-hover:scale-105"
+            loading={priority ? "eager" : "lazy"}
+          />
 
-        <div className="mt-4 space-y-4">
-          <div className="flex items-start justify-between gap-3">
-            <div>
-              <p className="text-sm text-neutral-500">
-                {formatCategory(product.category)}
-              </p>
-
-              <h3 className="mt-1 line-clamp-1 text-base font-semibold text-neutral-950">
-                {product.name}
-              </h3>
-            </div>
-
+          <div className="absolute right-3 top-3">
             <Badge tone={statusBadge.tone}>{statusBadge.label}</Badge>
           </div>
+        </div>
 
-          <p className="line-clamp-2 text-sm leading-6 text-neutral-600">
+        <div className="flex flex-1 flex-col p-5 pt-2">
+          <div className="flex items-center justify-between gap-3">
+            <p className="text-xs font-medium uppercase tracking-[0.16em] text-neutral-400">
+              {formatCategory(product.category)}
+            </p>
+
+            <div className="flex items-center gap-1 text-sm text-neutral-500">
+              <Star className="h-3.5 w-3.5 fill-neutral-900 text-neutral-900" />
+              <span>{product.rating.toFixed(1)}</span>
+            </div>
+          </div>
+
+          <h3 className="mt-3 text-base font-semibold leading-6 text-neutral-950 transition group-hover:text-neutral-700">
+            {product.name}
+          </h3>
+
+          <p className="mt-2 line-clamp-2 text-sm leading-6 text-neutral-600">
             {product.description}
           </p>
 
-          <div className="flex items-end justify-between border-t border-neutral-100 pt-4">
+          <div className="mt-5 flex items-end justify-between border-t border-neutral-100 pt-4">
             <div>
-              <p className="text-lg font-semibold text-neutral-950">
-                {formatCurrency(product.price)}
-              </p>
-
-              {product.compareAtPrice ? (
-                <p className="text-sm text-neutral-400 line-through">
-                  {formatCurrency(product.compareAtPrice)}
+              <div className="flex items-baseline gap-2">
+                <p className="text-xl font-semibold text-neutral-950">
+                  {formatCurrency(product.price)}
                 </p>
-              ) : null}
+
+                {product.compareAtPrice ? (
+                  <p className="text-sm text-neutral-400 line-through">
+                    {formatCurrency(product.compareAtPrice)}
+                  </p>
+                ) : null}
+              </div>
+
+              <p className="mt-1 text-xs text-neutral-500">
+                {isUnavailable
+                  ? "Currently unavailable"
+                  : `${product.stock} units in stock`}
+              </p>
             </div>
 
-            <p className="text-sm text-neutral-500">{product.stock} units</p>
+            <div className="flex h-9 w-9 items-center justify-center rounded-full border border-neutral-200 text-neutral-500 transition group-hover:border-neutral-950 group-hover:bg-neutral-950 group-hover:text-white">
+              <ArrowUpRight className="h-4 w-4" />
+            </div>
           </div>
         </div>
       </article>
