@@ -2,9 +2,8 @@ import Link from "next/link";
 import { CartLink } from "@/components/cart/cart-link";
 
 const navigation = [
-  { label: "Features", href: "/#features" },
   { label: "Products", href: "/products" },
-  { label: "Workflow", href: "/#workflow" },
+  { label: "Admin", href: "/admin" },
 ];
 
 export function SiteHeader() {
