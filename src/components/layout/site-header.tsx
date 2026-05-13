@@ -1,9 +1,9 @@
 import Link from "next/link";
 
 const navigation = [
-  { label: "Features", href: "#features" },
-  { label: "Products", href: "#products" },
-  { label: "Workflow", href: "#workflow" },
+  { label: "Features", href: "/#features" },
+  { label: "Products", href: "/products" },
+  { label: "Workflow", href: "/#workflow" },
 ];
 
 export function SiteHeader() {
@@ -30,7 +30,7 @@ export function SiteHeader() {
         </nav>
 
         <Link
-          href="#products"
+          href="/products"
           className="rounded-md bg-neutral-950 px-4 py-2 text-sm font-medium text-white transition hover:bg-neutral-800"
         >
           View products
