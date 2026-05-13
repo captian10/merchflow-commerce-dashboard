@@ -1,0 +1,26 @@
+import type { HTMLAttributes } from "react";
+import { cn } from "@/lib/utils";
+
+type BadgeProps = HTMLAttributes<HTMLSpanElement> & {
+  tone?: "default" | "success" | "warning" | "muted";
+};
+
+const tones = {
+  default: "bg-neutral-950 text-white",
+  success: "bg-emerald-50 text-emerald-700 ring-1 ring-emerald-200",
+  warning: "bg-amber-50 text-amber-700 ring-1 ring-amber-200",
+  muted: "bg-neutral-100 text-neutral-700",
+};
+
+export function Badge({ className, tone = "default", ...props }: BadgeProps) {
+  return (
+    <span
+      className={cn(
+        "inline-flex items-center rounded-full px-2.5 py-1 text-xs font-medium",
+        tones[tone],
+        className,
+      )}
+      {...props}
+    />
+  );
+}
