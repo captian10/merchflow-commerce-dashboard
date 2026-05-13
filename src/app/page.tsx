@@ -163,8 +163,12 @@ export default function Home() {
           </div>
 
           <div className="mt-10 grid gap-5 md:grid-cols-3">
-            {featuredProducts.map((product) => (
-              <ProductCard key={product.id} product={product} />
+            {featuredProducts.map((product, index) => (
+              <ProductCard
+                key={product.id}
+                product={product}
+                priority={index === 0}
+              />
             ))}
           </div>
         </div>

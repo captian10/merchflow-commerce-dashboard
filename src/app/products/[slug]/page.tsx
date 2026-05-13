@@ -1,11 +1,13 @@
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, Box, Layers, Star } from "lucide-react";
 import { notFound } from "next/navigation";
 import { SiteHeader } from "@/components/layout/site-header";
 import { Badge } from "@/components/ui/badge";
+import { ProductPurchasePanel } from "@/components/products/product-purchase-panel";
 import { products } from "@/data/products";
 import { formatCategory, formatCurrency } from "@/lib/utils";
-import { ProductPurchasePanel } from "@/components/products/product-purchase-panel";
+
 type ProductDetailsPageProps = {
   params: Promise<{
     slug: string;
@@ -82,8 +84,15 @@ export default async function ProductDetailsPage({
 
         <div className="mt-8 grid gap-8 lg:grid-cols-[0.9fr_1.1fr]">
           <div className="rounded-2xl border border-neutral-200 bg-white p-5 shadow-sm">
-            <div className="flex aspect-square items-center justify-center rounded-xl bg-neutral-100 text-sm font-medium text-neutral-500">
-              {formatCategory(product.category)}
+            <div className="relative aspect-square overflow-hidden rounded-xl bg-neutral-100">
+              <Image
+                src={product.image}
+                alt={product.name}
+                fill
+                sizes="(min-width: 1024px) 45vw, 100vw"
+                className="object-cover"
+                priority
+              />
             </div>
           </div>
 
@@ -148,6 +157,7 @@ export default async function ProductDetailsPage({
               <p className="text-sm font-semibold text-neutral-950">
                 Admin note
               </p>
+
               <p className="mt-2 text-sm leading-6 text-neutral-600">
                 This page is connected to the product catalog data and will
                 later support cart actions, inventory updates, and admin
@@ -164,6 +174,7 @@ export default async function ProductDetailsPage({
                 <p className="text-sm font-medium uppercase tracking-[0.2em] text-neutral-500">
                   Related
                 </p>
+
                 <h2 className="mt-3 text-2xl font-semibold tracking-tight text-neutral-950">
                   Similar products
                 </h2>
@@ -187,9 +198,11 @@ export default async function ProductDetailsPage({
                   <p className="text-sm text-neutral-500">
                     {formatCategory(item.category)}
                   </p>
+
                   <h3 className="mt-2 font-semibold text-neutral-950">
                     {item.name}
                   </h3>
+
                   <p className="mt-3 text-sm text-neutral-600">
                     {formatCurrency(item.price)}
                   </p>
